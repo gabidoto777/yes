@@ -16,6 +16,7 @@ public class controller : MonoBehaviour
     private LayerMask groundLayer;
 
 
+
     //Control variables
     // Movement speed of the player
     public float moveSpeed = 10f;
@@ -23,9 +24,12 @@ public class controller : MonoBehaviour
     public float groundCheckRadius = 0.02f;
     // Is the player currently grounded
     private bool isGrounded = false;
-
-    // Is the player currently falling
     public bool isFalling = false;
+    public bool isCrouching = false;
+    public bool isParachuting = false;
+    public bool isSprinting = false;
+
+    private float decelRate = 0;
 
 
     // Calculate ground check position based on collider bounds
@@ -46,6 +50,7 @@ public class controller : MonoBehaviour
         anim = GetComponent<Animator>();
         // Initialize the ground layer mask
         groundLayer = LayerMask.GetMask("Ground");
+         
 
         //other option to
         //initialize ground check position using separate GameObject as a child of the player
@@ -61,23 +66,59 @@ public class controller : MonoBehaviour
     void Update()
     {
 
+        isSprinting = moveSpeed == 10f;
+        if (isSprinting)
+        {
+            moveSpeed = 15f;
+        }
+        else
+        {
+            moveSpeed = 10f;
+        }
+
+        isCrouching = Input.GetButton("Fire3") && isGrounded;
+
+        if (Input.GetButton("Fire3") && isCrouching)
+        {
+            decelRate += Time.deltaTime;
+            Mathf.Clamp(decelRate, 0f, 1f);
+            moveSpeed = Mathf.Lerp(moveSpeed, 0f, decelRate);
+        }
+        else
+        {
+            //reset moveSpeed and decelRate when not crouching
+            moveSpeed = 10f;
+            decelRate = 0f;
+        }
+        // Update isFalling status
+        isFalling = rb.linearVelocityY < 0;
+        if (isFalling == true)
+        {
+            rb.gravityScale = 3f; //increase gravity when falling
+        }
+        else
+        {
+            rb.gravityScale = 1f; //reset gravity when not falling
+        }
+
+        isParachuting = Input.GetButton("Jump") && isFalling;
+        if (isParachuting == true && Input.GetButton("Jump"))
+        {
+            rb.gravityScale = 0.5f; //reduce gravity when parachuting
+        }
+
+        if(Input.GetButton("Vertical") && isParachuting)
+        {
+            rb.gravityScale = 3f;
+        }
+
         // Get horizontal input
         float hValue = Input.GetAxis("Horizontal");
 
-
-        // Get vertical input
         float vValue = Input.GetAxis("Vertical");
 
-
-        // Set the horizontal velocity based on input
-        rb.linearVelocityX = hValue * moveSpeed;
-
-
-        // Set the vertical velocity based on input
-        rb.linearVelocityY = vValue * moveSpeed;
-       
-
-
+        // Smoothly update the player's horizontal velocity
+        rb.linearVelocity = Vector2.Lerp(rb.linearVelocity, new Vector2(hValue * moveSpeed, rb.linearVelocity.y), 0.1f);
         // Check if the player is grounded using OverlapCircle
         isGrounded = Physics2D.OverlapCircle(groundCheckPos, groundCheckRadius, groundLayer);
         // Flip the sprite based on movement direction
@@ -86,11 +127,15 @@ public class controller : MonoBehaviour
         // Jump when the jump button is pressed
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
+            rb.linearVelocityY -= 1.5f; //simulate weight increase when jumping
             rb.AddForce(Vector2.up * 10f, ForceMode2D.Impulse);
         }
         // Update animator parameters
         anim.SetFloat("hValue",Mathf.Abs(hValue));
         anim.SetBool("isGrounded", isGrounded);
-
+        anim.SetBool("isFalling", isFalling);
+        anim.SetBool("isCrouching", isCrouching);
+        anim.SetBool("isParachuting", isParachuting);
+        anim.SetFloat("vValue", Mathf.Abs(vValue));
     }
 }
