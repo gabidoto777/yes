@@ -1,5 +1,9 @@
+using System.ComponentModel;
 using UnityEngine;
 
+
+[RequireComponent(typeof(Rigidbody2D), typeof(Collider2D), typeof(SpriteRenderer))]
+[RequireComponent (typeof(Animator))]
 public class controller : MonoBehaviour
 {
 
@@ -12,8 +16,12 @@ public class controller : MonoBehaviour
     SpriteRenderer sr;
     // Reference to the Animator component
     Animator anim;
+    // Reference to the GroundCheck script
+    GroundCheck groundCheckScript;
+
+
     // LayerMask to identify ground objects
-    private LayerMask groundLayer;
+    // LayerMask groundLayer;
 
 
 
@@ -22,18 +30,20 @@ public class controller : MonoBehaviour
     public float moveSpeed = 10f;
     // Radius for ground check
     public float groundCheckRadius = 0.02f;
-    // Is the player currently grounded
-    private bool isGrounded = false;
-    public bool isFalling = false;
+
+    public bool isGrounded = false;
+
+    private bool isFalling = false;
+    public bool IsFalling => isFalling;
+
     public bool isCrouching = false;
     public bool isParachuting = false;
-    public bool isSprinting = false;
 
     private float decelRate = 0;
 
 
     // Calculate ground check position based on collider bounds
-    private Vector2 groundCheckPos => new Vector2(col.bounds.center.x, col.bounds.min.y);
+    //private Vector2 groundCheckPos => new Vector2(col.bounds.center.x, col.bounds.min.y);
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -48,9 +58,9 @@ public class controller : MonoBehaviour
         sr = GetComponent<SpriteRenderer>();
         // Get the Animator component attached to the player
         anim = GetComponent<Animator>();
-        // Initialize the ground layer mask
-        groundLayer = LayerMask.GetMask("Ground");
+
          
+        groundCheckScript = new GroundCheck(col, LayerMask.GetMask("Ground"), groundCheckRadius);
 
         //other option to
         //initialize ground check position using separate GameObject as a child of the player
@@ -66,15 +76,7 @@ public class controller : MonoBehaviour
     void Update()
     {
 
-        isSprinting = moveSpeed == 10f;
-        if (isSprinting)
-        {
-            moveSpeed = 15f;
-        }
-        else
-        {
-            moveSpeed = 10f;
-        }
+        isGrounded = groundCheckScript.CheckisGrounded();
 
         isCrouching = Input.GetButton("Fire3") && isGrounded;
 
@@ -104,12 +106,17 @@ public class controller : MonoBehaviour
         isParachuting = Input.GetButton("Jump") && isFalling;
         if (isParachuting == true && Input.GetButton("Jump"))
         {
-            rb.gravityScale = 0.5f; //reduce gravity when parachuting
+            rb.gravityScale = 0.2f; //reduce gravity when parachuting
         }
 
         if(Input.GetButton("Vertical") && isParachuting)
         {
             rb.gravityScale = 3f;
+        }
+
+        if(Input.GetButtonDown("Fire1"))
+        {
+            anim.SetTrigger("Fire");
         }
 
         // Get horizontal input
@@ -120,7 +127,7 @@ public class controller : MonoBehaviour
         // Smoothly update the player's horizontal velocity
         rb.linearVelocity = Vector2.Lerp(rb.linearVelocity, new Vector2(hValue * moveSpeed, rb.linearVelocity.y), 0.1f);
         // Check if the player is grounded using OverlapCircle
-        isGrounded = Physics2D.OverlapCircle(groundCheckPos, groundCheckRadius, groundLayer);
+        //isGrounded = Physics2D.OverlapCircle(groundCheckPos, groundCheckRadius, groundLayer);
         // Flip the sprite based on movement direction
         if (hValue != 0)
             sr.flipX = hValue < 0;
@@ -128,7 +135,7 @@ public class controller : MonoBehaviour
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
             rb.linearVelocityY -= 1.5f; //simulate weight increase when jumping
-            rb.AddForce(Vector2.up * 10f, ForceMode2D.Impulse);
+            rb.AddForce(Vector2.up * 12f, ForceMode2D.Impulse);
         }
         // Update animator parameters
         anim.SetFloat("hValue",Mathf.Abs(hValue));
