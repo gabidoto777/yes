@@ -7,79 +7,74 @@ using UnityEngine;
 public class controller : MonoBehaviour
 {
 
-    // Component References
-    //public Transform groundCheck;
+    // COMPONENT REFERENCES
     Rigidbody2D rb;
-    // References to the Collider2D component
+    // REFERENCE TO THE COLLIDER2D COMPONENT
     Collider2D col;
-    // Reference to the SpriteRenderer component
+    // REFERENCE TO THE SPRITERENDERER COMPONENT
     SpriteRenderer sr;
-    // Reference to the Animator component
+    // REFERENCE TO THE ANIMATOR COMPONENT
     Animator anim;
-    // Reference to the GroundCheck script
+    // REFERENCE TO THE GROUNDCHECK SCRIPT
     GroundCheck groundCheckScript;
 
-
-    // LayerMask to identify ground objects
-    // LayerMask groundLayer;
-
-
-
-    //Control variables
-    // Movement speed of the player
+    // CONTROL VARIABLES
+    //MOVE SPEED
     public float moveSpeed = 10f;
-    // Radius for ground check
+    // RADIUS FOR GROUND CHECK
     public float groundCheckRadius = 0.02f;
-
+    // LAYER MASK FOR GROUND DETECTION
     public bool isGrounded = false;
-
     private bool isFalling = false;
     public bool IsFalling => isFalling;
-
     public bool isCrouching = false;
-    public bool isParachuting = false;
-
+    public bool  isParachuting = false;
     private float decelRate = 0;
 
-
-    // Calculate ground check position based on collider bounds
-    //private Vector2 groundCheckPos => new Vector2(col.bounds.center.x, col.bounds.min.y);
-
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    // START IS CALLED BEFORE THE FIRST FRAME UPDATE
     void Start()
     {
 
-        // Get the Rigidbody2D component attached to the player
-        rb  = GetComponent<Rigidbody2D>();
-        // Get the Collider2D component attached to the player
+        // GET THE RIGIDBODY2D COMPONENT
+        rb = GetComponent<Rigidbody2D>();
+        // Get THE COLLIDER2D COMPONENT
         col = GetComponent<Collider2D>();
-        // Get the SpriteRenderer component attached to the player
+        // GET THE SPRITERENDERER COMPONENT
         sr = GetComponent<SpriteRenderer>();
-        // Get the Animator component attached to the player
+        // GET THE ANIMATOR COMPONENT
         anim = GetComponent<Animator>();
-
-         
+        // INITIALIZE THE GROUNDCHECK SCRIPT
         groundCheckScript = new GroundCheck(col, LayerMask.GetMask("Ground"), groundCheckRadius);
 
-        //other option to
-        //initialize ground check position using separate GameObject as a child of the player
-        //GameObject newObj = new GameObject("GroundCheck");
-        //newObj.transform.SetParent(transform);
-        //newObj.transform.localPosition = Vector3.zero;
-        // groundCheck = newObj.transform;
-        //this is basically the same as creating an empty GameObject in the Unity Editor and assigning it to groundCheck, we do it here to keep everything contained in code.
+
+
+        /*ANOTHER OPTION IS TO INITIALIZE THE GROUND CHECK POSITION USING A SEPARATE GAMEOBJECT AS A CHILD OF THE PLAYER
+        *
+        *
+        *
+        GameObject newObj = new GameObject("GroundCheck");
+        newObj.transform.SetParent(transform);
+        newObj.transform.localPosition = Vector3.zero;
+        groundCheck = newObj.transform;
+        *
+        *
+        *
+        THIS IS ESSENTIALLY THE SAME AS CREATING AN EMPTY GAMEOBJECT IN THE UNITY EDITOR AND ASSIGNING IT TO GROUNDCHECK — WE'RE JUST DOING IT HERE IN CODE TO KEEP EVERYTHING SELF-CONTAINED*/
 
     }
 
-    // Update is called once per frame
+    // UPDATE IS CALLED ONCE PER FRAME
     void Update()
     {
-
+        // UPDATE isGrounded STATUS
         isGrounded = groundCheckScript.CheckisGrounded();
 
+
+        // UPDATE isCrouching STATUS
         isCrouching = Input.GetButton("Fire3") && isGrounded;
 
+
+        // DECELERATE MOVEMENT WHEN CROUCHING
         if (Input.GetButton("Fire3") && isCrouching)
         {
             decelRate += Time.deltaTime;
@@ -88,56 +83,75 @@ public class controller : MonoBehaviour
         }
         else
         {
-            //reset moveSpeed and decelRate when not crouching
+            // RESET MOVE SPEED AND DECEL RATE WHEN NOT CROUCHING
             moveSpeed = 10f;
             decelRate = 0f;
         }
-        // Update isFalling status
+
+
+        // UPDATE isFalling STATUS
         isFalling = rb.linearVelocityY < 0;
         if (isFalling == true)
         {
-            rb.gravityScale = 3f; //increase gravity when falling
+            rb.gravityScale = 3f; // INCREASE GRAVITY WHEN FALLING
         }
         else
         {
-            rb.gravityScale = 1f; //reset gravity when not falling
+            rb.gravityScale = 1f; // RESET GRAVITY WHEN NOT FALLING
         }
 
+
+
+        // UPDATE isParachuting STATUS
         isParachuting = Input.GetButton("Jump") && isFalling;
         if (isParachuting == true && Input.GetButton("Jump"))
         {
-            rb.gravityScale = 0.2f; //reduce gravity when parachuting
+            rb.gravityScale = 0.2f; // REDUCE GRAVITY WHEN PARACHUTING
         }
 
-        if(Input.GetButton("Vertical") && isParachuting)
+
+        // INCREASE GRAVITY WHEN MOVING VERTICALLY WHILE PARACHUTING
+        if (Input.GetButton("Vertical") && isParachuting)
         {
             rb.gravityScale = 3f;
         }
 
-        if(Input.GetButtonDown("Fire1"))
+
+        // FIRE ACTION
+        if (Input.GetButtonDown("Fire1"))
         {
             anim.SetTrigger("Fire");
         }
 
-        // Get horizontal input
-        float hValue = Input.GetAxis("Horizontal");
 
+        // GETTING INPUT VALUES FOR HORIZONTAL AND VERTICAL MOVEMENT
+        float hValue = Input.GetAxis("Horizontal");
         float vValue = Input.GetAxis("Vertical");
 
-        // Smoothly update the player's horizontal velocity
+
+        // SMOOTH PLAYER MOVEMENT
         rb.linearVelocity = Vector2.Lerp(rb.linearVelocity, new Vector2(hValue * moveSpeed, rb.linearVelocity.y), 0.1f);
-        // Check if the player is grounded using OverlapCircle
-        //isGrounded = Physics2D.OverlapCircle(groundCheckPos, groundCheckRadius, groundLayer);
-        // Flip the sprite based on movement direction
+
+
+        /* CHECKING IF THE PLAYER IS GROUNDED USING OVERLAPCIRCLE (METHOD REPLACED BY GROUNDCHECK SCRIPT)
+        isGrounded = Physics2D.OverlapCircle(groundCheckPos, groundCheckRadius, groundLayer); */
+
+
+        // FLIPPING THE SPRITE BASED ON MOVEMENT DIRECTION
         if (hValue != 0)
             sr.flipX = hValue < 0;
-        // Jump when the jump button is pressed
+
+
+        // JUMPING
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
             rb.linearVelocityY -= 1.5f; //simulate weight increase when jumping
-            rb.AddForce(Vector2.up * 12f, ForceMode2D.Impulse);
+            rb.AddForce(Vector2.up * 10f, ForceMode2D.Impulse);
         }
-        // Update animator parameters
+
+
+
+        // ANIMATOR PARAMETERS UPDATE
         anim.SetFloat("hValue",Mathf.Abs(hValue));
         anim.SetBool("isGrounded", isGrounded);
         anim.SetBool("isFalling", isFalling);
@@ -145,4 +159,39 @@ public class controller : MonoBehaviour
         anim.SetBool("isParachuting", isParachuting);
         anim.SetFloat("vValue", Mathf.Abs(vValue));
     }
+
+
+    // Collision and Trigger Event Handlers
+    private void OnCollissionEnter2D(Collision2D collision)
+    {
+
+    }
+
+    private void OnCollissionStay2D(Collision2D collision)
+    {
+        
+    }
+
+    private void OnCollissionExit2D(Collision2D collision)
+    {
+        Debug.Log("Collided with: " + collision.gameObject.name);
+    }
+
+
+    // Trigger event handlers
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        Destroy(collision.gameObject);
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+
+    }
+
 }
