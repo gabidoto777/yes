@@ -16,6 +16,8 @@ public class SimplePickups : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
+            controller pc = collision.GetComponent<controller>();
+
             switch (typeOfPickup)
             {
                 case pickupType.Life:
@@ -24,6 +26,7 @@ public class SimplePickups : MonoBehaviour
                     break;
                 case pickupType.Powerup:
                     // Implement powerup pickup logic
+                    pc.ApplyJumpForcePowerup();
                     Debug.Log("Powerup picked up!");
                     break;
             }

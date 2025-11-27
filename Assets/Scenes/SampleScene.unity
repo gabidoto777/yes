@@ -345,7 +345,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92eb8ab14717d90498b7cba5d0fc030e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SimplePickups
-  typeOfPickup: 0
+  typeOfPickup: 1
 --- !u!1 &258214027
 GameObject:
   m_ObjectHideFlags: 0
@@ -1690,7 +1690,7 @@ GameObject:
   - component: {fileID: 716856174}
   m_Layer: 6
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1857,9 +1857,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::controller
   moveSpeed: 7
   groundCheckRadius: 0.3
-  isGrounded: 0
-  isCrouching: 0
-  isParachuting: 0
+  jumpForce: 10.5
 --- !u!95 &716856173
 Animator:
   serializedVersion: 7
@@ -2393,7 +2391,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92eb8ab14717d90498b7cba5d0fc030e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SimplePickups
-  typeOfPickup: 0
+  typeOfPickup: 1
 --- !u!1 &1008274306
 GameObject:
   m_ObjectHideFlags: 0
@@ -2855,7 +2853,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92eb8ab14717d90498b7cba5d0fc030e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SimplePickups
-  typeOfPickup: 0
+  typeOfPickup: 1
 --- !u!1 &1260729843 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 507445107889511805, guid: 9236eecda60d8c4429fc4ca99c722009, type: 3}
@@ -2878,7 +2876,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92eb8ab14717d90498b7cba5d0fc030e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SimplePickups
-  typeOfPickup: 0
+  typeOfPickup: 1
 --- !u!1 &1324853392 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 507445107889511805, guid: 9236eecda60d8c4429fc4ca99c722009, type: 3}
@@ -2901,7 +2899,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92eb8ab14717d90498b7cba5d0fc030e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SimplePickups
-  typeOfPickup: 0
+  typeOfPickup: 1
 --- !u!1 &1366074463
 GameObject:
   m_ObjectHideFlags: 0

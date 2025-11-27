@@ -1,5 +1,6 @@
 using System.ComponentModel;
 using UnityEngine;
+using System.Collections;
 
 
 [RequireComponent(typeof(Rigidbody2D), typeof(Collider2D), typeof(SpriteRenderer))]
@@ -24,12 +25,18 @@ public class controller : MonoBehaviour
     // RADIUS FOR GROUND CHECK
     public float groundCheckRadius = 0.02f;
     // LAYER MASK FOR GROUND DETECTION
-    public bool isGrounded = false;
+    private bool isGrounded = false;
     private bool isFalling = false;
-    public bool IsFalling => isFalling;
-    public bool isCrouching = false;
-    public bool  isParachuting = false;
+    private bool IsFalling => isFalling;
+    private bool isCrouching = false;
+    private bool  isParachuting = false;
     private float decelRate = 0;
+    public float jumpForce = 10.5f;
+
+
+    // STATE COROUTINES
+    Coroutine jumpForceCoroutine;
+
 
     // START IS CALLED BEFORE THE FIRST FRAME UPDATE
     void Start()
@@ -146,7 +153,7 @@ public class controller : MonoBehaviour
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
             rb.linearVelocityY -= 1.5f; //simulate weight increase when jumping
-            rb.AddForce(Vector2.up * 10f, ForceMode2D.Impulse);
+            rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
         }
 
 
@@ -194,4 +201,24 @@ public class controller : MonoBehaviour
 
     }
 
+    public void ApplyJumpForcePowerup()
+    {
+        if (jumpForceCoroutine != null)
+        {
+            StopCoroutine(jumpForceCoroutine);
+            jumpForceCoroutine = null;
+            jumpForce = 10.5f; // RESET JUMP FORCE TO DEFAULT
+        }
+
+        jumpForceCoroutine = StartCoroutine(JumpForceChange());
+    }
+
+    // JUMP FORCE POWERUP COROUTINE (USING SYSTEM.COLLECTIONS)
+    IEnumerator JumpForceChange()
+    {
+        jumpForce = 12;
+        yield return new WaitForSeconds(5f);
+        jumpForce = 10.5f;
+        jumpForceCoroutine = null;
+    }
 }
