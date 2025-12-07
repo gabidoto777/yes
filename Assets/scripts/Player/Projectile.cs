@@ -10,5 +10,14 @@ public class Projectile : MonoBehaviour
 
     public void SetVelocity(Vector2 velocity) => GetComponent<Rigidbody2D>().linearVelocity = velocity;
 
+    // Destroy the projectile on collision with enemies
+    private void OnCollision2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+            Destroy(gameObject);
+        }
+    }
+
 }
 

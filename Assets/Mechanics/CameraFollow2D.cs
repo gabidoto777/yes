@@ -7,7 +7,7 @@ public class CameraFollow2D : MonoBehaviour
 
     public Transform target;
 
-    public Vector3 offset = new Vector3(0, 0, -10);
+    public Vector3 offset = new Vector3(-10, 0, -10);
 
     public float smoothSpeed = 50f;
 

@@ -6351,7 +6351,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Sprite_Enemies_190
+      name: walkingToy1
       rect:
         serializedVersion: 2
         x: 615
@@ -6373,7 +6373,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Sprite_Enemies_191
+      name: walkingToy2
       rect:
         serializedVersion: 2
         x: 646
@@ -6395,7 +6395,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Sprite_Enemies_192
+      name: walkingToy3
       rect:
         serializedVersion: 2
         x: 678
@@ -6417,7 +6417,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Sprite_Enemies_193
+      name: walkingToy4
       rect:
         serializedVersion: 2
         x: 710
@@ -7011,7 +7011,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Sprite_Enemies_220
+      name: walkingToy5
       rect:
         serializedVersion: 2
         x: 619
@@ -7033,7 +7033,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Sprite_Enemies_221
+      name: walkingToy6
       rect:
         serializedVersion: 2
         x: 649
@@ -7055,7 +7055,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Sprite_Enemies_222
+      name: walkingToy7
       rect:
         serializedVersion: 2
         x: 679
@@ -8551,7 +8551,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Sprite_Enemies_290
+      name: Enemy Fireball
       rect:
         serializedVersion: 2
         x: 801
@@ -9519,7 +9519,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Sprite_Enemies_334
+      name: EnemyTurret Idle
       rect:
         serializedVersion: 2
         x: 800
@@ -9541,7 +9541,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Sprite_Enemies_335
+      name: EnemyTurret shooting 1
       rect:
         serializedVersion: 2
         x: 823
@@ -9563,7 +9563,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Sprite_Enemies_336
+      name: EnemyTurret shooting 2
       rect:
         serializedVersion: 2
         x: 852
@@ -9585,7 +9585,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Sprite_Enemies_337
+      name: EnemyTurret shooting 3
       rect:
         serializedVersion: 2
         x: 881
@@ -9959,7 +9959,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Sprite_Enemies_354
+      name: EnemyTurret shooting 4
       rect:
         serializedVersion: 2
         x: 800
@@ -9981,7 +9981,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Sprite_Enemies_355
+      name: EnemyTurret shooting 5
       rect:
         serializedVersion: 2
         x: 823
@@ -10003,7 +10003,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Sprite_Enemies_356
+      name: EnemyTurret shooting 6
       rect:
         serializedVersion: 2
         x: 852
@@ -10025,7 +10025,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Sprite_Enemies_357
+      name: EnemyTurret shooting 7
       rect:
         serializedVersion: 2
         x: 881
@@ -17300,6 +17300,15 @@ TextureImporter:
       - key: SpriteEditor.SliceSettings
         value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":64.0,"y":64.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.0},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":7,"pivotUnitMode":0,"slicingType":0,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
+      Enemy Fireball: -675099761668843415
+      EnemyTurret Idle: 6927981411972597962
+      EnemyTurret shooting 1: 4627375648895073383
+      EnemyTurret shooting 2: 695433566626481274
+      EnemyTurret shooting 3: 6826037723698911918
+      EnemyTurret shooting 4: -5470561866128488072
+      EnemyTurret shooting 5: 8061766921210076013
+      EnemyTurret shooting 6: 4647701245553551253
+      EnemyTurret shooting 7: -1403105667936205071
       Sprite_Enemies_0: 764029468473576725
       Sprite_Enemies_1: -6284743126234988054
       Sprite_Enemies_10: 434443584825584821
@@ -17402,10 +17411,6 @@ TextureImporter:
       Sprite_Enemies_188: 296248836355130678
       Sprite_Enemies_189: 6008531413896533326
       Sprite_Enemies_19: 5936280976125624050
-      Sprite_Enemies_190: -7740976299076336629
-      Sprite_Enemies_191: 5864597278351089918
-      Sprite_Enemies_192: 3518403487217760310
-      Sprite_Enemies_193: 1385343082646111619
       Sprite_Enemies_194: -3960992974914748961
       Sprite_Enemies_195: 5076739167485291560
       Sprite_Enemies_196: 768173727663160992
@@ -17436,9 +17441,6 @@ TextureImporter:
       Sprite_Enemies_218: -447618796485722229
       Sprite_Enemies_219: 1688739287363906393
       Sprite_Enemies_22: -1987375561109403511
-      Sprite_Enemies_220: 4578007720435654037
-      Sprite_Enemies_221: 8607828886598789810
-      Sprite_Enemies_222: -3126446779147290471
       Sprite_Enemies_223: -8301871448743020659
       Sprite_Enemies_224: 4350099983143109339
       Sprite_Enemies_225: 642125781578382008
@@ -17513,7 +17515,6 @@ TextureImporter:
       Sprite_Enemies_288: -7199059520936841643
       Sprite_Enemies_289: 936871272392101253
       Sprite_Enemies_29: 5637884585264908924
-      Sprite_Enemies_290: -675099761668843415
       Sprite_Enemies_291: 2634411856299483029
       Sprite_Enemies_292: 5163059118326160480
       Sprite_Enemies_293: -147000117367987440
@@ -17562,10 +17563,6 @@ TextureImporter:
       Sprite_Enemies_331: -2074944620527126796
       Sprite_Enemies_332: -5660035332088033470
       Sprite_Enemies_333: -7888178152231183674
-      Sprite_Enemies_334: 6927981411972597962
-      Sprite_Enemies_335: 4627375648895073383
-      Sprite_Enemies_336: 695433566626481274
-      Sprite_Enemies_337: 6826037723698911918
       Sprite_Enemies_338: 8761235641639183874
       Sprite_Enemies_339: -1521151032509392861
       Sprite_Enemies_34: -8577990633489452866
@@ -17584,10 +17581,6 @@ TextureImporter:
       Sprite_Enemies_351: 8359410497581630345
       Sprite_Enemies_352: 7773292347351907205
       Sprite_Enemies_353: 3606134393623581498
-      Sprite_Enemies_354: -5470561866128488072
-      Sprite_Enemies_355: 8061766921210076013
-      Sprite_Enemies_356: 4647701245553551253
-      Sprite_Enemies_357: -1403105667936205071
       Sprite_Enemies_358: 5163442230676943546
       Sprite_Enemies_359: -7325169635093428772
       Sprite_Enemies_36: -5836643729186081258
@@ -17987,6 +17980,13 @@ TextureImporter:
       Sprite_Enemies_98: -3146763840220451440
       Sprite_Enemies_99: 3848975548304371034
       marioFireBall: 7112116234620641092
+      walkingToy1: -7740976299076336629
+      walkingToy2: 5864597278351089918
+      walkingToy3: 3518403487217760310
+      walkingToy4: 1385343082646111619
+      walkingToy5: 4578007720435654037
+      walkingToy6: 8607828886598789810
+      walkingToy7: -3126446779147290471
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

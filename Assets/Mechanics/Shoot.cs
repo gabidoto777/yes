@@ -39,7 +39,7 @@ public class NewMonoBehaviourScript : MonoBehaviour
         else
         {
             curProjectile = Instantiate(projectilePrefab, spawnPointLeft.position, Quaternion.identity);
-            curProjectile.SetVelocity(initialShotVelocity);
+            curProjectile.SetVelocity(new Vector2(-initialShotVelocity.x, initialShotVelocity.y));
         }
     }
 

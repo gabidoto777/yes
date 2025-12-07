@@ -22,6 +22,8 @@ public class controller : MonoBehaviour
     // CONTROL VARIABLES
     //MOVE SPEED
     public float moveSpeed = 10f;
+    // INITIAL POWERUP TIMER DURATION
+    public float initalPowerUpTimer = 5f;
     // RADIUS FOR GROUND CHECK
     public float groundCheckRadius = 0.02f;
     // LAYER MASK FOR GROUND DETECTION
@@ -36,7 +38,7 @@ public class controller : MonoBehaviour
 
     // STATE COROUTINES
     Coroutine jumpForceCoroutine;
-
+    float jumpPowerupTimer = 0f;
 
     // START IS CALLED BEFORE THE FIRST FRAME UPDATE
     void Start()
@@ -171,7 +173,10 @@ public class controller : MonoBehaviour
     // Collision and Trigger Event Handlers
     private void OnCollissionEnter2D(Collision2D collision)
     {
-
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Enemy"))
+        {
+            TakeDamage(1);
+        }
     }
 
     private void OnCollissionStay2D(Collision2D collision)
@@ -188,7 +193,12 @@ public class controller : MonoBehaviour
     // Trigger event handlers
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Destroy(collision.gameObject);
+        if (collision.CompareTag("Squish") && rb.linearVelocityY < 0)
+        {
+            collision.GetComponentInParent<BaseEnemy>().TakeDamage(0, DamageType.JumpedOn);
+            rb.linearVelocity = Vector2.zero;
+            rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+        }
     }
 
     private void OnTriggerStay2D(Collider2D collision)
@@ -200,6 +210,13 @@ public class controller : MonoBehaviour
     {
 
     }
+
+    public void TakeDamage(int livesLost)
+    {
+ 
+    }
+
+    public void IncreaseGravity() => rb.gravityScale = 5f;
 
     public void ApplyJumpForcePowerup()
     {
@@ -216,9 +233,18 @@ public class controller : MonoBehaviour
     // JUMP FORCE POWERUP COROUTINE (USING SYSTEM.COLLECTIONS)
     IEnumerator JumpForceChange()
     {
+        jumpPowerupTimer = initalPowerUpTimer + jumpPowerupTimer;
         jumpForce = 12;
-        yield return new WaitForSeconds(5f);
+
+        while (jumpPowerupTimer > 0)
+        {
+            jumpPowerupTimer -= Time.deltaTime;
+            Debug.Log("Jump Powerup Timer: " + jumpPowerupTimer);
+            yield return null;
+        }
+
         jumpForce = 10.5f;
         jumpForceCoroutine = null;
+        jumpPowerupTimer = 0;
     }
 }
