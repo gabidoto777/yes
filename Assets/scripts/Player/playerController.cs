@@ -4,7 +4,7 @@ using System.Collections;
 
 
 [RequireComponent(typeof(Rigidbody2D), typeof(Collider2D), typeof(SpriteRenderer))]
-[RequireComponent (typeof(Animator))]
+[RequireComponent(typeof(Animator))]
 public class controller : MonoBehaviour
 {
 
@@ -20,25 +20,25 @@ public class controller : MonoBehaviour
     GroundCheck groundCheckScript;
 
     // CONTROL VARIABLES
-    //MOVE SPEED
+
     public float moveSpeed = 10f;
-    // INITIAL POWERUP TIMER DURATION
     public float initalPowerUpTimer = 5f;
-    // RADIUS FOR GROUND CHECK
     public float groundCheckRadius = 0.02f;
-    // LAYER MASK FOR GROUND DETECTION
     private bool isGrounded = false;
     private bool isFalling = false;
     private bool IsFalling => isFalling;
     private bool isCrouching = false;
-    private bool  isParachuting = false;
+    private bool isParachuting = false;
     private float decelRate = 0;
     public float jumpForce = 10.5f;
-
+    public int maxLives = 10;
+    private int _lives = 5;
 
     // STATE COROUTINES
+    #region State Vars
     Coroutine jumpForceCoroutine;
     float jumpPowerupTimer = 0f;
+    #endregion
 
     // START IS CALLED BEFORE THE FIRST FRAME UPDATE
     void Start()
@@ -119,7 +119,7 @@ public class controller : MonoBehaviour
         }
 
 
-        // INCREASE GRAVITY WHEN MOVING VERTICALLY WHILE PARACHUTING
+        // DIVE ATTACK
         if (Input.GetButton("Vertical") && isParachuting)
         {
             rb.gravityScale = 3f;
@@ -161,7 +161,7 @@ public class controller : MonoBehaviour
 
 
         // ANIMATOR PARAMETERS UPDATE
-        anim.SetFloat("hValue",Mathf.Abs(hValue));
+        anim.SetFloat("hValue", Mathf.Abs(hValue));
         anim.SetBool("isGrounded", isGrounded);
         anim.SetBool("isFalling", isFalling);
         anim.SetBool("isCrouching", isCrouching);
@@ -181,7 +181,7 @@ public class controller : MonoBehaviour
 
     private void OnCollissionStay2D(Collision2D collision)
     {
-        
+
     }
 
     private void OnCollissionExit2D(Collision2D collision)
@@ -203,7 +203,7 @@ public class controller : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        
+
     }
 
     private void OnTriggerExit2D(Collider2D collision)
@@ -213,11 +213,12 @@ public class controller : MonoBehaviour
 
     public void TakeDamage(int livesLost)
     {
- 
+
     }
 
-    public void IncreaseGravity() => rb.gravityScale = 5f;
+    public void IncreaseGravity() => rb.gravityScale = 5.0f;
 
+    #region PowerUp Functions
     public void ApplyJumpForcePowerup()
     {
         if (jumpForceCoroutine != null)
@@ -247,4 +248,40 @@ public class controller : MonoBehaviour
         jumpForceCoroutine = null;
         jumpPowerupTimer = 0;
     }
+    #endregion
+
+
+    #region Getters And Setters
+    public int lives
+    {
+        get => _lives;
+
+        set
+        {
+            if (value < 0)
+            {
+                GameOver();
+                return;
+            }
+
+            if (value > maxLives)
+            {
+                _lives = maxLives;
+            }
+            else
+            {
+                _lives = value;
+            }
+
+            Debug.Log($"Life value has changed to {_lives}");
+        }
+    }
+
+    private void GameOver()
+    {
+        Debug.Log("Game Over!");
+    }
+
+
 }
+#endregion

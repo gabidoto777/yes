@@ -18,6 +18,8 @@ public class TurretEnemy : BaseEnemy
             Debug.LogError("Fire rate must be greater than zero, set to default value of 2");
             fireRate = 2.0f;
         }
+
+        GameManager.Instance.OnPlayerSpawned += (controller playerInstance) => playerRef = playerInstance;
     }
 
     // Update is called once per frame
